@@ -1,0 +1,28 @@
+NODE mv
+SQL >
+
+    SELECT
+        JSONExtractString(__headers, 'companyid') companyid,
+        JSONExtractString(__headers, 'modelnumber') modelnumber,
+        JSONExtractString(__headers, 'serialnumber') serialnumber,
+        JSONExtractString(__headers, 'stackid') stackid,
+        JSONExtractString(__headers, 'correlationid') correlationid,
+        JSONExtractString(__headers, 'deviceid') deviceid,
+        JSONExtractString(__headers, 'eventrecorderid') eventrecorderid,
+        JSONExtractString(__headers, 'groupid') groupid,
+        JSONExtractString(__headers, 'rootgroupid') rootgroupid,
+        JSONExtractString(__headers, 'vehicleid') vehicleid,
+        JSONExtractString(__headers, 'timezone') timezone,
+        JSONExtractString(samples, 'datatype') datatype,
+        JSONExtractString(samples, 'source') source,
+        JSONExtractString(samples, 'value') value,
+        toDateTime64(tsSec + tsUsec/1000000,6) epoch
+    FROM kafka_sample_vnet
+    ARRAY JOIN samples
+
+TYPE materialized
+DATASOURCE sample_vnet_mv
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(epoch)"
+ENGINE_SORTING_KEY "companyid, serialnumber, datatype"
+

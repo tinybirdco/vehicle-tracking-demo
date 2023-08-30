@@ -1,0 +1,11 @@
+# Data Source created from Pipe 'sample_latest_odo'
+
+SCHEMA >
+    `timestamp` SimpleAggregateFunction(max, DateTime64(6)),
+    `companyid` String,
+    `serialnumber` String,
+    `vehicleid` String,
+    `odometer_mi` AggregateFunction(argMax, Float64, DateTime64(6))
+
+ENGINE "AggregatingMergeTree"
+ENGINE_SORTING_KEY "companyid, serialnumber, vehicleid"

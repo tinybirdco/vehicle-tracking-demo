@@ -1,0 +1,36 @@
+# Data Source created from Pipe 'sample_gps_materialization'
+
+SCHEMA >
+    `companyid` String,
+    `modelnumber` String,
+    `serialnumber` String,
+    `stackid` String,
+    `correlationid` String,
+    `deviceid` String,
+    `eventrecorderid` String,
+    `groupid` String,
+    `rootgroupid` String,
+    `vehicleid` String,
+    `timezone` String,
+    `avgECMSpeed` Int16,
+    `avgGpsSpeed` Int16,
+    `deviceSourceId` Int16,
+    `gpsFix` Int16,
+    `hdop` Float32,
+    `heading` String,
+    `horizontalAccuracy` Float32,
+    `latitude` String,
+    `longitude` String,
+    `maxECMSpeed` Int16,
+    `minGpsSpeed` Int16,
+    `modifiedByEr` Int16,
+    `numsats` Int16,
+    `seqNum` Int16,
+    `speed` Int16,
+    `speedAccuracy` Int16,
+    `speedSourceId` Int16,
+    `epoch` DateTime64(6)
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(epoch)"
+ENGINE_SORTING_KEY "stackid, companyid, modelnumber, rootgroupid, groupid, serialnumber, vehicleid, deviceid, eventrecorderid, epoch"

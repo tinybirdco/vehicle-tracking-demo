@@ -1,0 +1,54 @@
+TOKEN "demo dashboard token company" READ
+
+NODE odo_0
+SQL >
+
+    %
+    SELECT
+        max(timestamp) timestamp,
+        companyid,
+        serialnumber as serial_number,
+        vehicleid,
+        argMaxMerge(odometer_mi) odometer_mi
+    FROM sample_latest_odo_mv
+    WHERE
+        1
+        {% if defined(company_param) and company_param != 'All' %}
+            AND companyid = {{ String(company_param, '10001', description="Company ID parameter") }}
+        {% end %}
+        {% if defined(serial_param) and serial_param != 'All' %}
+            AND serialnumber = {{ String(serial_param, 'QZ5NG4EZYI', description="Serial number parameter") }}
+        {% end %}
+    GROUP BY companyid, serialnumber, vehicleid
+
+
+
+NODE gps_0
+SQL >
+
+    %
+    SELECT
+        argMaxMerge(latitude) AS latitude,
+        argMaxMerge(longitude) AS longitude,
+        vehicleid
+    FROM sample_latest_gps_mv
+    WHERE
+        1
+        {% if defined(company_param) and company_param != 'All' %}
+            AND companyid = {{ String(company_param, '10001', description="Company ID parameter") }}
+        {% end %}
+        {% if defined(serial_param) and serial_param != 'All' %}
+            AND serialnumber = {{ String(serial_param, 'QZ5NG4EZYI', description="Serial number parameter") }}
+        {% end %}
+    GROUP BY vehicleid
+
+
+
+NODE endpoint
+SQL >
+
+    %
+    SELECT * FROM odo_0
+    JOIN gps_0 USING vehicleid
+
+

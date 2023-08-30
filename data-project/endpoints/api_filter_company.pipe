@@ -1,0 +1,17 @@
+TOKEN "demo dashboard token" READ
+
+NODE endpoint
+SQL >
+
+    %
+    SELECT 'All' as companyid
+    UNION ALL
+    SELECT DISTINCT companyid FROM vehicle_hierarchy
+    WHERE
+        1
+        {% if defined(serial_param) and serial_param != 'All' %}
+            AND serialnumber = {{ String(serial_param, 'QZ5NG4EZYI', description="Serial number parameter") }}
+        {% end %}
+    ORDER BY companyid
+
+

@@ -1,0 +1,28 @@
+NODE mv
+SQL >
+
+    SELECT
+        maxSimpleState(epoch) AS vin_ts,
+        companyid,
+        serialnumber,
+        vehicleid,
+        modelnumber,
+        source,
+        datatype,
+        argMaxState(value, epoch) AS value_string
+    FROM sample_vnet_mv
+    WHERE datatype LIKE 'VIN%'
+    GROUP BY
+        companyid,
+        serialnumber,
+        vehicleid,
+        modelnumber,
+        source,
+        datatype
+
+TYPE materialized
+DATASOURCE sample_latest_vin_mv
+ENGINE "AggregatingMergeTree"
+ENGINE_SORTING_KEY "companyid, serialnumber, datatype, vehicleid, modelnumber, source"
+
+

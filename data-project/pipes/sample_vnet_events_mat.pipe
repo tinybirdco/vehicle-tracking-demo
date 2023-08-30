@@ -1,0 +1,20 @@
+NODE mv
+SQL >
+
+    SELECT
+        toStartOfMinute(epoch) AS ts,
+        companyid,
+        serialnumber,
+        sumSimpleState(1) AS n_events
+    FROM sample_vnet_mv
+    GROUP BY
+        ts,
+        companyid,
+        serialnumber
+
+TYPE materialized
+DATASOURCE sample_vnet_events_mv
+ENGINE "AggregatingMergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(ts)"
+ENGINE_SORTING_KEY "ts, companyid, serialnumber"
+

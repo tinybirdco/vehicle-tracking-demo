@@ -1,0 +1,22 @@
+# Data Source created from Pipe 'sample_vnet_materialization'
+
+SCHEMA >
+    `companyid` String,
+    `modelnumber` String,
+    `serialnumber` String,
+    `stackid` String,
+    `correlationid` String,
+    `deviceid` String,
+    `eventrecorderid` String,
+    `groupid` String,
+    `rootgroupid` String,
+    `vehicleid` String,
+    `timezone` String,
+    `datatype` String,
+    `source` String,
+    `value` String,
+    `epoch` DateTime64(6)
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(epoch)"
+ENGINE_SORTING_KEY "companyid, serialnumber, datatype"

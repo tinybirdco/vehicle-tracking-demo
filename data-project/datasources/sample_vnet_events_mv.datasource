@@ -1,0 +1,11 @@
+# Data Source created from Pipe 'sample_vnet_events_mat'
+
+SCHEMA >
+    `ts` DateTime,
+    `companyid` String,
+    `serialnumber` String,
+    `n_events` SimpleAggregateFunction(sum, UInt64)
+
+ENGINE "AggregatingMergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(ts)"
+ENGINE_SORTING_KEY "ts, companyid, serialnumber"

@@ -1,0 +1,38 @@
+
+SCHEMA >
+    `__value` String,
+    `__headers` String,
+    `avgECMSpeed` Int16 `json:$.avgECMSpeed`,
+    `avgGpsSpeed` Int16 `json:$.avgGpsSpeed`,
+    `deviceSourceId` Int16 `json:$.deviceSourceId`,
+    `gpsFix` Int16 `json:$.gpsFix`,
+    `hdop` Float32 `json:$.hdop`,
+    `heading` String `json:$.heading`,
+    `horizontalAccuracy` Float32 `json:$.horizontalAccuracy`,
+    `latitude` String `json:$.latitude`,
+    `longitude` String `json:$.longitude`,
+    `maxECMSpeed` Int16 `json:$.maxECMSpeed`,
+    `maxGpsSpeed` Int16 `json:$.maxGpsSpeed`,
+    `minECMSpeed` Int16 `json:$.minECMSpeed`,
+    `minGpsSpeed` Int16 `json:$.minGpsSpeed`,
+    `modifiedByEr` Int16 `json:$.modifiedByEr`,
+    `numsats` Int16 `json:$.numsats`,
+    `seqNum` Int16 `json:$.seqNum`,
+    `speed` Int16 `json:$.speed`,
+    `speedAccuracy` Int16 `json:$.speedAccuracy`,
+    `speedSourceId` Int16 `json:$.speedSourceId`,
+    `tsSec` Int64 `json:$.tsSec`,
+    `tsUsec` Int32 `json:$.tsUsec`
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(__timestamp)"
+ENGINE_SORTING_KEY "__timestamp"
+
+KAFKA_CONNECTION_NAME 'tb_confluent'
+KAFKA_TOPIC 'demo_vehicle_gps'
+KAFKA_GROUP_ID 'demo_vehicle_gps_20230622'
+KAFKA_AUTO_OFFSET_RESET 'latest'
+KAFKA_STORE_RAW_VALUE 'False'
+KAFKA_STORE_HEADERS 'True'
+KAFKA_TARGET_PARTITIONS 'auto'
+KAFKA_KEY_AVRO_DESERIALIZATION ''

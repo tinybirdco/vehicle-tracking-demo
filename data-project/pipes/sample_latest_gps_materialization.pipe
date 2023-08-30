@@ -1,0 +1,32 @@
+NODE sample_gps_mv_pipe_2473_0
+SQL >
+
+    SELECT
+        maxSimpleState(epoch) AS timeInUTC,
+        argMaxState(latitude, epoch) AS latitude,
+        argMaxState(longitude, epoch) AS longitude,
+        argMaxState(speed, epoch) AS speed,
+        argMaxState(heading, epoch) AS heading,
+        argMaxState(hdop, epoch) AS hdop,
+        argMaxState(numsats, epoch) AS numsats,
+        argMaxState(horizontalAccuracy, epoch) AS horizontalAccuracy,
+        serialnumber,
+        modelnumber,
+        companyid,
+        groupid,
+        eventrecorderid,
+        vehicleid
+    FROM sample_gps_mv
+    GROUP BY
+        serialnumber,
+        modelnumber,
+        companyid,
+        groupid,
+        eventrecorderid,
+        vehicleid
+
+TYPE materialized
+DATASOURCE sample_latest_gps_mv
+ENGINE "AggregatingMergeTree"
+ENGINE_SORTING_KEY "companyid, serialnumber, modelnumber, groupid, vehicleid, eventrecorderid"
+

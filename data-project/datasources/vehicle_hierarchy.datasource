@@ -1,0 +1,11 @@
+
+SCHEMA >
+    `vehicleid` String,
+    `companyid` String,
+    `serialnumber` String,
+    `modelnumber` String,
+    `sourcetype` String,
+    `deviceid` String
+
+ENGINE "MergeTree"
+ENGINE_SORTING_KEY "companyid, serialnumber"

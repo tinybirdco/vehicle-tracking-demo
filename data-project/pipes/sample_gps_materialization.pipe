@@ -1,0 +1,41 @@
+NODE mv
+SQL >
+
+    SELECT
+        JSONExtractString(__headers, 'companyid') companyid,
+        JSONExtractString(__headers, 'modelnumber') modelnumber,
+        JSONExtractString(__headers, 'serialnumber') serialnumber,
+        JSONExtractString(__headers, 'stackid') stackid,
+        JSONExtractString(__headers, 'correlationid') correlationid,
+        JSONExtractString(__headers, 'deviceid') deviceid,
+        JSONExtractString(__headers, 'eventrecorderid') eventrecorderid,
+        JSONExtractString(__headers, 'groupid') groupid,
+        JSONExtractString(__headers, 'rootgroupid') rootgroupid,
+        JSONExtractString(__headers, 'vehicleid') vehicleid,
+        JSONExtractString(__headers, 'timezone') timezone,
+        avgECMSpeed,
+        avgGpsSpeed,
+        deviceSourceId,
+        gpsFix,
+        hdop,
+        heading,
+        horizontalAccuracy,
+        latitude,
+        longitude,
+        maxECMSpeed,
+        minGpsSpeed,
+        modifiedByEr,
+        numsats,
+        seqNum,
+        speed,
+        speedAccuracy,
+        speedSourceId,
+        toDateTime64(tsSec + tsUsec/1000000,6) epoch
+    FROM kafka_sample_gps
+
+TYPE materialized
+DATASOURCE sample_gps_mv
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(epoch)"
+ENGINE_SORTING_KEY "stackid, companyid, modelnumber, rootgroupid, groupid, serialnumber, vehicleid, deviceid, eventrecorderid, epoch"
+

@@ -1,0 +1,21 @@
+NODE mv
+SQL >
+
+    SELECT
+        maxSimpleState(epoch) AS timestamp,
+        companyid,
+        serialnumber,
+        vehicleid,
+        argMaxState(toFloat32(value) * 0.621371, epoch) AS odometer_mi
+    FROM sample_vnet_mv
+    WHERE datatype = 'ODOMETER'
+    GROUP BY
+        companyid,
+        serialnumber,
+        vehicleid
+
+TYPE materialized
+DATASOURCE sample_latest_odo_mv
+ENGINE "AggregatingMergeTree"
+ENGINE_SORTING_KEY "companyid, serialnumber, vehicleid"
+

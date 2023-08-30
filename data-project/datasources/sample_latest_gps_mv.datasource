@@ -1,0 +1,20 @@
+# Data Source created from Pipe 'sample_latest_gps_materialization'
+
+SCHEMA >
+    `timeInUTC` SimpleAggregateFunction(max, DateTime64(6)),
+    `latitude` AggregateFunction(argMax, String, DateTime64(6)),
+    `longitude` AggregateFunction(argMax, String, DateTime64(6)),
+    `speed` AggregateFunction(argMax, Int16, DateTime64(6)),
+    `heading` AggregateFunction(argMax, String, DateTime64(6)),
+    `hdop` AggregateFunction(argMax, Float32, DateTime64(6)),
+    `numsats` AggregateFunction(argMax, Int16, DateTime64(6)),
+    `horizontalAccuracy` AggregateFunction(argMax, Float32, DateTime64(6)),
+    `serialnumber` String,
+    `modelnumber` String,
+    `companyid` String,
+    `groupid` String,
+    `eventrecorderid` String,
+    `vehicleid` String
+
+ENGINE "AggregatingMergeTree"
+ENGINE_SORTING_KEY "companyid, serialnumber, modelnumber, groupid, vehicleid, eventrecorderid"

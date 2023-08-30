@@ -1,0 +1,14 @@
+# Data Source created from Pipe 'sample_latest_vin'
+
+SCHEMA >
+    `vin_ts` SimpleAggregateFunction(max, DateTime64(6)),
+    `companyid` String,
+    `serialnumber` String,
+    `vehicleid` String,
+    `modelnumber` String,
+    `source` String,
+    `datatype` String,
+    `value_string` AggregateFunction(argMax, String, DateTime64(6))
+
+ENGINE "AggregatingMergeTree"
+ENGINE_SORTING_KEY "companyid, serialnumber, datatype, vehicleid, modelnumber, source"

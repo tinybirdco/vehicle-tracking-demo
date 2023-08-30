@@ -1,0 +1,23 @@
+TOKEN "demo dashboard token" READ
+
+NODE endpoint
+SQL >
+
+    %
+    SELECT
+        vehicleid name,
+        round(argMaxMerge(odometer_mi), 2) value
+    FROM sample_latest_odo_mv
+    WHERE
+        1
+        {% if defined(company_param) and company_param != 'All' %}
+            AND companyid = {{ String(company_param, '10001', description="Company ID parameter") }}
+        {% end %}
+        {% if defined(serial_param) and serial_param != 'All' %}
+            AND serialnumber = {{ String(serial_param, 'QZ5NG4EZYI', description="Serial number parameter") }}
+        {% end %}
+    GROUP BY name
+    ORDER BY value desc
+    LIMIT 5
+
+

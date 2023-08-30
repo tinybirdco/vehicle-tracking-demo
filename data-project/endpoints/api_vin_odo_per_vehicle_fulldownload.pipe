@@ -1,0 +1,92 @@
+TOKEN "demo dashboard token" READ
+
+NODE vin_0
+SQL >
+
+    %
+    SELECT
+        max(vin_ts) vin_ts,
+        companyid,
+        serialnumber,
+        vehicleid,
+        modelnumber,
+        source,
+        datatype,
+        argMaxMerge(value_string) value_string
+    FROM sample_latest_vin_mv
+    WHERE
+        1
+        {% if defined(company_param) and company_param != 'All' %}
+            AND companyid = {{ String(company_param, '10001', description="Company ID parameter") }}
+        {% end %}
+        {% if defined(serial_param) and serial_param != 'All' %}
+            AND serialnumber = {{ String(serial_param, 'QZ5NG4EZYI', description="Serial number parameter") }}
+        {% end %}
+    GROUP BY companyid, serialnumber, vehicleid, modelnumber, source, datatype
+    ORDER BY companyid, serialnumber, vehicleid, modelnumber, source, datatype
+
+
+
+NODE vin_1
+SQL >
+
+    %
+    SELECT
+        max(vin_ts) timeInUTC,
+        companyid,
+        serialnumber,
+        vehicleid,
+        modelnumber,
+        source,
+        arrayStringConcat(groupArray(value_string)) VIN
+    FROM vin_0
+    GROUP BY
+        companyid,
+        serialnumber,
+        vehicleid,
+        modelnumber,
+        source
+
+
+
+NODE odo_0
+SQL >
+
+    %
+    SELECT
+        max(timestamp) timeInUTC,
+        companyid,
+        serialnumber,
+        vehicleid,
+        argMaxMerge(odometer_mi) odometer_mi
+    FROM sample_latest_odo_mv
+    WHERE
+        1
+        {% if defined(company_param) and company_param != 'All' %}
+            AND companyid = {{ String(company_param, '10001', description="Company ID parameter") }}
+        {% end %}
+        {% if defined(serial_param) and serial_param != 'All' %}
+            AND serialnumber = {{ String(serial_param, 'QZ5NG4EZYI', description="Serial number parameter") }}
+        {% end %}
+    GROUP BY companyid, serialnumber, vehicleid
+
+
+
+NODE endpoint
+SQL >
+
+    %
+    SELECT
+        timeInUTC,
+        companyid,
+        serialnumber,
+        vehicleid,
+        modelnumber,
+        source,
+        VIN,
+        round(odometer_mi, 2) odometer_mi
+    FROM vin_1
+    JOIN odo_0 USING vehicleid
+    ORDER BY timeInUTC desc
+
+

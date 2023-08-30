@@ -1,0 +1,36 @@
+TOKEN "demo dashboard token" READ
+
+NODE latest_ts
+SQL >
+
+    %
+    SELECT max(vin_ts) as max_ts FROM sample_latest_vin_mv
+    WHERE
+        1
+        {% if defined(company_param) and company_param != 'All' %}
+            AND companyid = {{ String(company_param, '10001', description="Company ID parameter") }}
+        {% end %}
+        {% if defined(serial_param) and serial_param != 'All' %}
+            AND serialnumber = {{ String(serial_param, 'QZ5NG4EZYI', description="Serial number parameter") }}
+        {% end %}
+
+
+
+NODE endpoint
+SQL >
+
+    %
+    WITH (SELECT max_ts FROM latest_ts) as max_ts
+
+    SELECT uniq(vehicleid) n_vehicles FROM sample_latest_vin_mv
+    WHERE
+        1
+        {% if defined(company_param) and company_param != 'All' %}
+            AND companyid = {{ String(company_param, '10001', description="Company ID parameter") }}
+        {% end %}
+        {% if defined(serial_param) and serial_param != 'All' %}
+            AND serialnumber = {{ String(serial_param, 'QZ5NG4EZYI', description="Serial number parameter") }}
+        {% end %}
+        AND vin_ts BETWEEN subtractHours(max_ts,1) AND max_ts
+
+
