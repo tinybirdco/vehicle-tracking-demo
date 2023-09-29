@@ -16,7 +16,7 @@ const fetchTinybirdUrl = async (fetchUrl: string): Promise<any[]> => {
 };
 
 export default function Dashboard() {
-  const [page, setPage] = useState('0');  
+  const [page, setPage] = useState('1');  
   const [refreshFrequency, setRefreshFrequency] = useState("2");
   const [token, setToken] = useState(TINYBIRD_TOKEN);
   const [companyFilter, setCompanyFilter] = useState('All');
