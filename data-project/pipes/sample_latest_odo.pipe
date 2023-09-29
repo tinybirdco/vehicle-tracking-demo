@@ -16,6 +16,4 @@ SQL >
 
 TYPE materialized
 DATASOURCE sample_latest_odo_mv
-ENGINE "AggregatingMergeTree"
-ENGINE_SORTING_KEY "companyid, serialnumber, vehicleid"
 

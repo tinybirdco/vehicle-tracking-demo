@@ -22,7 +22,5 @@ SQL >
 
 TYPE materialized
 DATASOURCE sample_latest_vin_mv
-ENGINE "AggregatingMergeTree"
-ENGINE_SORTING_KEY "companyid, serialnumber, datatype, vehicleid, modelnumber, source"
 
 

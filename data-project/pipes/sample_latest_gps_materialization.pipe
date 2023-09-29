@@ -27,6 +27,4 @@ SQL >
 
 TYPE materialized
 DATASOURCE sample_latest_gps_mv
-ENGINE "AggregatingMergeTree"
-ENGINE_SORTING_KEY "companyid, serialnumber, modelnumber, groupid, vehicleid, eventrecorderid"
 

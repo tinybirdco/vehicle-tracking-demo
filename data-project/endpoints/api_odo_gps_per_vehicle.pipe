@@ -1,4 +1,4 @@
-TOKEN "demo dashboard token company" READ
+TOKEN "demo dashboard token" READ
 
 NODE odo_0
 SQL >
