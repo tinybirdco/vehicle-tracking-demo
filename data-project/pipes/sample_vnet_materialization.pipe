@@ -22,7 +22,4 @@ SQL >
 
 TYPE materialized
 DATASOURCE sample_vnet_mv
-ENGINE "MergeTree"
-ENGINE_PARTITION_KEY "toYYYYMM(epoch)"
-ENGINE_SORTING_KEY "companyid, serialnumber, datatype"
 

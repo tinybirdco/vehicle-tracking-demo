@@ -35,7 +35,4 @@ SQL >
 
 TYPE materialized
 DATASOURCE sample_gps_mv
-ENGINE "MergeTree"
-ENGINE_PARTITION_KEY "toYYYYMM(epoch)"
-ENGINE_SORTING_KEY "stackid, companyid, modelnumber, rootgroupid, groupid, serialnumber, vehicleid, deviceid, eventrecorderid, epoch"
 

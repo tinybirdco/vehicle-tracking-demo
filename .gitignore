@@ -37,6 +37,7 @@
 
 # tinyb
 *.tinyb
+.diff_tmp
 
 #demo data
 vehicle_hierarchy.csv
