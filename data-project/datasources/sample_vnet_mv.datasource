@@ -1,21 +1,21 @@
 # Data Source created from Pipe 'sample_vnet_materialization'
 
 SCHEMA >
-    `companyid` String,
-    `modelnumber` String,
-    `serialnumber` String,
-    `stackid` String,
-    `correlationid` String,
-    `deviceid` String,
-    `eventrecorderid` String,
-    `groupid` String,
-    `rootgroupid` String,
-    `vehicleid` String,
-    `timezone` String,
-    `datatype` String,
-    `source` String,
-    `value` String,
-    `epoch` DateTime64(6)
+    `companyid` String `json:$.companyid`,
+    `modelnumber` String `json:$.modelnumber`,
+    `serialnumber` String `json:$.serialnumber`,
+    `stackid` String `json:$.stackid`,
+    `correlationid` String `json:$.correlationid`,
+    `deviceid` String `json:$.deviceid`,
+    `eventrecorderid` String `json:$.eventrecorderid`,
+    `groupid` String `json:$.groupid`,
+    `rootgroupid` String `json:$.rootgroupid`,
+    `vehicleid` String `json:$.vehicleid`,
+    `timezone` String `json:$.timezone`,
+    `datatype` String `json:$.datatype`,
+    `source` String `json:$.source`,
+    `value` String `json:$.value`,
+    `epoch` DateTime64(6) `json:$.epoch`
 
 ENGINE "MergeTree"
 ENGINE_PARTITION_KEY "toYYYYMM(epoch)"
